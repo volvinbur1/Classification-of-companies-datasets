@@ -38,29 +38,32 @@
             // 
             this.TimePeriod_comboBox.FormattingEnabled = true;
             this.TimePeriod_comboBox.Items.AddRange(new object[] {
-            "(rnd) 2013-07",
-            "(rnd) 2013-08",
-            "(fastStorage) 2013-08",
-            "(rnd) 2013-09"});
-            this.TimePeriod_comboBox.Location = new System.Drawing.Point(17, 18);
+            "(rnd) 2013-7",
+            "(rnd) 2013-8",
+            "(fastStorage) 2013-8",
+            "(rnd) 2013-9"});
+            this.TimePeriod_comboBox.Location = new System.Drawing.Point(23, 22);
+            this.TimePeriod_comboBox.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.TimePeriod_comboBox.Name = "TimePeriod_comboBox";
-            this.TimePeriod_comboBox.Size = new System.Drawing.Size(139, 21);
+            this.TimePeriod_comboBox.Size = new System.Drawing.Size(184, 24);
             this.TimePeriod_comboBox.TabIndex = 0;
             this.TimePeriod_comboBox.Text = "Select a time period";
             this.TimePeriod_comboBox.SelectedIndexChanged += new System.EventHandler(this.TimePeriod_comboBox_SelectedIndexChanged);
             // 
             // FileNumber_textBox
             // 
-            this.FileNumber_textBox.Location = new System.Drawing.Point(17, 79);
+            this.FileNumber_textBox.Location = new System.Drawing.Point(23, 97);
+            this.FileNumber_textBox.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.FileNumber_textBox.Name = "FileNumber_textBox";
-            this.FileNumber_textBox.Size = new System.Drawing.Size(139, 20);
+            this.FileNumber_textBox.Size = new System.Drawing.Size(184, 22);
             this.FileNumber_textBox.TabIndex = 1;
             // 
             // Analyze_button
             // 
-            this.Analyze_button.Location = new System.Drawing.Point(49, 111);
+            this.Analyze_button.Location = new System.Drawing.Point(65, 137);
+            this.Analyze_button.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.Analyze_button.Name = "Analyze_button";
-            this.Analyze_button.Size = new System.Drawing.Size(75, 23);
+            this.Analyze_button.Size = new System.Drawing.Size(100, 28);
             this.Analyze_button.TabIndex = 2;
             this.Analyze_button.Text = "Analyze";
             this.Analyze_button.UseVisualStyleBackColor = true;
@@ -69,22 +72,24 @@
             // AvalibleFileQuantity_label
             // 
             this.AvalibleFileQuantity_label.AutoSize = true;
-            this.AvalibleFileQuantity_label.Location = new System.Drawing.Point(16, 47);
+            this.AvalibleFileQuantity_label.Location = new System.Drawing.Point(21, 58);
+            this.AvalibleFileQuantity_label.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.AvalibleFileQuantity_label.Name = "AvalibleFileQuantity_label";
-            this.AvalibleFileQuantity_label.Size = new System.Drawing.Size(120, 13);
+            this.AvalibleFileQuantity_label.Size = new System.Drawing.Size(160, 17);
             this.AvalibleFileQuantity_label.TabIndex = 3;
             this.AvalibleFileQuantity_label.Text = "Enter document number";
             this.AvalibleFileQuantity_label.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // DataSelection_Form
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(176, 156);
+            this.ClientSize = new System.Drawing.Size(235, 192);
             this.Controls.Add(this.AvalibleFileQuantity_label);
             this.Controls.Add(this.Analyze_button);
             this.Controls.Add(this.FileNumber_textBox);
             this.Controls.Add(this.TimePeriod_comboBox);
+            this.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.MaximizeBox = false;
             this.MinimizeBox = false;
             this.Name = "DataSelection_Form";

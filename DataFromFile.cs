@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -12,11 +13,16 @@ namespace ExtraTask
         {
             try
             {
+                string line;
                 readDataList = new List<string>();
                 string [] twofolder = timePeriod.Split(' ');
-                twofolder[1] = twofolder[1].Substring(0, twofolder[1].Length - 2);
-                StreamReader analFileStream = new StreamReader($@"\DataToAnalyze\{twofolder[0]}\{twofolder[1]}\{fileNumber}.csv");
-                
+                twofolder[0] = twofolder[0].Substring(1, twofolder[0].Length - 2);
+                StreamReader analFileStream = new StreamReader($@"DataToAnalyze\{twofolder[0]}\{twofolder[1]}\{fileNumber}.csv");
+                while (( line = analFileStream.ReadLine()) != null)
+                {
+                    readDataList.Add(line);
+                }
+
                 return true;
 
             }
@@ -29,8 +35,13 @@ namespace ExtraTask
 
         public static SortedList<double, double> ParseSelectedColumn(int columnID, List<string> listWithInputData)
         {
-            
-            return null;
+            SortedList<double, double> returnList = new SortedList<double, double>();
+            foreach (var element in listWithInputData)
+            {
+                string[] arr = element.Split(new[] {";\t"}, StringSplitOptions.RemoveEmptyEntries);
+                returnList.Add(Convert.ToDouble(arr[0]), Convert.ToDouble(arr[columnID]));
+            }
+            return returnList;
         }
     }
 }
