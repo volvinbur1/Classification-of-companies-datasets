@@ -25,7 +25,7 @@ namespace ExtraTask
         }
 
         public PlotModel model = new PlotModel { Title = "Plot" };
-        
+
         private void PlotBasedOn_comboBox_SelectedIndexChanged(object sender, EventArgs e)
         {
             PlotModel model = new PlotModel { Title = "Plot" };
@@ -43,13 +43,13 @@ namespace ExtraTask
 
             Func<double, double> func = x => coefForFunc[1] * x + coefForFunc[0];
 
-            model.Series.Add(new FunctionSeries(func, variableForPlotsList.Keys[0], variableForPlotsList.Keys[variableForPlotsList.Count-1], 0.1));
+            model.Series.Add(new FunctionSeries(func, variableForPlotsList.Keys[0], variableForPlotsList.Keys[variableForPlotsList.Count - 1], 0.1));
 
             foreach (var pair in variableForPlotsList)
             {
                 dots.Points.Add(new DataPoint(pair.Key, pair.Value));
                 dots.Smooth = true;
- 
+
             }
             model.Series.Add(dots);
             PoleReg_PlotView.Model = model;
