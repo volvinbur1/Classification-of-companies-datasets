@@ -49,7 +49,7 @@ namespace ExtraTask
             PolynomialRegression objRegression =
                 objSquares.Learn(variableList.Keys.ToArray(), variableList.Values.ToArray());
 
-            Func<double, double> OxOyFunc = x => objRegression.Coefficients[0] * x + objRegression.Coefficients[1];
+            Func<double, double> OxOyFunc = x => (objRegression.Weights[0] * x + objRegression.Intercept);
 
             return OxOyFunc;
         }

@@ -22,9 +22,9 @@ namespace ExtraTask
                 {
                     readDataList.Add(line);
                 }
-                
+
                 readDataList.RemoveAt(0);
-                
+
                 return true;
 
             }
@@ -41,7 +41,9 @@ namespace ExtraTask
             foreach (var element in listWithInputData)
             {
                 string[] arr = element.Split(new[] {";\t"}, StringSplitOptions.RemoveEmptyEntries);
-                returnList.Add(Convert.ToDouble(arr[0]), Convert.ToDouble(arr[columnID]));
+                double timeStampe = returnList.Count > 0 ? Convert.ToDouble(arr[0]) - returnList.Keys[0] : Convert.ToDouble(arr[0]);
+
+                returnList.Add(timeStampe, Convert.ToDouble(arr[columnID]));
             }
             return returnList;
         }
