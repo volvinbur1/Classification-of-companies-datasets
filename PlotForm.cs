@@ -32,15 +32,17 @@ namespace ExtraTask
 
         private void PlotBasedOn_comboBox_SelectedIndexChanged(object sender, EventArgs e)
         {
+            double[] coefForFunc = Algorithm.PolynomialRegresion(PlotBasedOn_comboBox.SelectedItem.ToString(), InputDataList, out SortedList<double, double> variableForPlotsList);
 
-                 
-            var func = Algorithm.PolynomialRegresion(PlotBasedOn_comboBox.SelectedItem.ToString(), InputDataList, out SortedList<double, double> variableForPlotsList);
-            //model.Series.Add(new FunctionSeries(func, variableForPlotsList.Keys[0], variableForPlotsList.Keys[variableForPlotsList.Count-1], 0.1));
-            var dots = new OxyPlot.Series.LineSeries
+            Func<double, double> func = x => coefForFunc[1] * x + coefForFunc[0];
+
+            model.Series.Add(new FunctionSeries(func, variableForPlotsList.Keys[0], variableForPlotsList.Keys[variableForPlotsList.Count-1], 0.1));
+
+            LineSeries dots = new LineSeries
             {
                 LineStyle = LineStyle.None,
                 MarkerType = MarkerType.Circle,
-                MarkerSize = 4,
+                MarkerSize = 1.5,
                 MarkerStroke = OxyColors.Black
             };
             foreach (var pair in variableForPlotsList)
