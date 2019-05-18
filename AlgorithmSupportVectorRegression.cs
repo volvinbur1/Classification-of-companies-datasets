@@ -1,6 +1,6 @@
 ﻿namespace ExtraTask
 {
-    public class AlgorithmSupportVectorRegression
+    public partial class Algorithm
     {
         
     }

@@ -72,6 +72,7 @@
             this.Name = "Plot_Form";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Plot";
+            this.Load += new System.EventHandler(this.Plot_Form_Load);
             this.ResumeLayout(false);
             this.PerformLayout();
 
