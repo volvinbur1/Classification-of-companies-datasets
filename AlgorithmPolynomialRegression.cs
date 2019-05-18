@@ -39,7 +39,7 @@ namespace ExtraTask
             return default(int);
         };
 
-        public static double[] PolynomialRegresion(string cID, List<string> inputDataList, out SortedList<double, double> variableList) // y = DOUBLE_Array[0]*x + DOUBLE_Array[1];
+        public static Func<double, double> PolynomialRegresion(string cID, List<string> inputDataList, out SortedList<double, double> variableList) // y = DOUBLE_Array[0]*x + DOUBLE_Array[1];
         {
             int columnID = getColomnIdFunc(cID);
 
@@ -49,8 +49,9 @@ namespace ExtraTask
             PolynomialRegression objRegression =
                 objSquares.Learn(variableList.Keys.ToArray(), variableList.Values.ToArray());
 
+            Func<double, double> OxOyFunc = x => objRegression.Coefficients[0] * x + objRegression.Coefficients[1];
 
-            return objRegression.Coefficients;
+            return OxOyFunc;
         }
     }
 }
