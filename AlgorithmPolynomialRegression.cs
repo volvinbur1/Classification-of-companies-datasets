@@ -45,7 +45,7 @@ namespace ExtraTask
 
             variableList = DataFromFile.ParseSelectedColumn(columnID, inputDataList);
 
-            PolynomialLeastSquares objSquares = new PolynomialLeastSquares() {Degree = 1};
+            PolynomialLeastSquares objSquares = new PolynomialLeastSquares() { Degree = 1 };
             PolynomialRegression objRegression =
                 objSquares.Learn(variableList.Keys.ToArray(), variableList.Values.ToArray());
 
