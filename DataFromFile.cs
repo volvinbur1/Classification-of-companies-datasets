@@ -22,7 +22,9 @@ namespace ExtraTask
                 {
                     readDataList.Add(line);
                 }
-
+                
+                readDataList.RemoveAt(0);
+                
                 return true;
 
             }
