@@ -35,16 +35,30 @@ namespace ExtraTask
             }
         }
 
-        public static SortedList<double, double> ParseSelectedColumn(int columnID, List<string> listWithInputData)
+        public static SortedList<double, double> ParseSelectedColumn(int columnID, List<string> listWithInputData)//, out double minValueOfIndependentVar, out double maxValueOfIndependentVar)
         {
+            long startTime = -1;
+            //minValueOfIndependentVar = double.MaxValue;
+            //maxValueOfIndependentVar = double.MinValue;
             SortedList<double, double> returnList = new SortedList<double, double>();
+
             foreach (var element in listWithInputData)
             {
                 string[] arr = element.Split(new[] {";\t"}, StringSplitOptions.RemoveEmptyEntries);
-                double timeStampe = returnList.Count > 0 ? Convert.ToDouble(arr[0]) - returnList.Keys[0] : Convert.ToDouble(arr[0]);
+                if (startTime == -1)
+                    startTime = Convert.ToInt64(arr[0]);
 
-                returnList.Add(timeStampe, Convert.ToDouble(arr[columnID]));
+                double timeStamp = Math.Round((Convert.ToInt64(arr[0]) - startTime)/ 3600.0, 3);
+                double independentVar = Convert.ToDouble(arr[columnID]);
+
+                //if (independentVar > maxValueOfIndependentVar)
+                //    maxValueOfIndependentVar = independentVar;
+                //if (independentVar < minValueOfIndependentVar)
+                //    minValueOfIndependentVar = independentVar;
+
+                returnList.Add(timeStamp, independentVar);
             }
+
             return returnList;
         }
     }
