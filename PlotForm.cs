@@ -32,7 +32,10 @@ namespace ExtraTask
 
         private void PlotBasedOn_comboBox_SelectedIndexChanged(object sender, EventArgs e)
         {
-            Algorithm.PolynomialRegresion(PlotBasedOn_comboBox.SelectedItem.ToString(), InputDataList, out SortedList<double, double> variableForPlotsList);
+
+                 
+            var func = Algorithm.PolynomialRegresion(PlotBasedOn_comboBox.SelectedItem.ToString(), InputDataList, out SortedList<double, double> variableForPlotsList);
+            //model.Series.Add(new FunctionSeries(func, variableForPlotsList.Keys[0], variableForPlotsList.Keys[variableForPlotsList.Count-1], 0.1));
             var dots = new OxyPlot.Series.LineSeries
             {
                 LineStyle = LineStyle.None,
@@ -45,22 +48,18 @@ namespace ExtraTask
                 dots.Points.Add(new DataPoint(pair.Key, pair.Value));
                 dots.Smooth = true;
 
-                model.Series.Add(dots);
+                
             }
+            model.Series.Add(dots);
+            PoleReg_PlotView.Model = model;
 
         }
         public PlotModel model = new PlotModel { Title = "Plot" };
 
         private void Plot_Form_Load(object sender, EventArgs e)
         {
- 
-            var dots = new OxyPlot.Series.LineSeries
-            {
-                LineStyle = LineStyle.None,
-                MarkerType = MarkerType.Circle,
-                MarkerSize = 4.5,
-                MarkerStroke = OxyColors.Black
-            };
+
+   
 
             string[] comboBoxComponent = new string[]
             {
@@ -74,8 +73,13 @@ namespace ExtraTask
                 "Network received throughput [KB/s]",
                 "Network transmitted throughput [KB/s]"
             };
-            
+
             PlotBasedOn_comboBox.Items.AddRange(comboBoxComponent);
+        }
+
+        private void PlotPR_pannel_Paint(object sender, PaintEventArgs e)
+        {
+
         }
     }
 }
