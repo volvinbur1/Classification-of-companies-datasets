@@ -1,4 +1,3 @@
-Volodymyr Burdeinyi, [18.05.19 23:41]
 using System;
 using System.Collections.Generic;
 using System.Windows.Forms;
