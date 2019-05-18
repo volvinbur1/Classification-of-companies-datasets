@@ -24,10 +24,10 @@ namespace ExtraTask
             MainFormObj = obj;
         }
 
-        public PlotModel model = new PlotModel { Title = "Plot" };
-
+       
         private void PlotBasedOn_comboBox_SelectedIndexChanged(object sender, EventArgs e)
         {
+            model.ResetAllAxes();
             PlotModel model = new PlotModel { Title = "Plot" };
             LineSeries dots = new LineSeries
             {
@@ -49,7 +49,6 @@ namespace ExtraTask
             {
                 dots.Points.Add(new DataPoint(pair.Key, pair.Value));
                 dots.Smooth = true;
-
             }
             model.Series.Add(dots);
             PoleReg_PlotView.Model = model;
@@ -69,7 +68,7 @@ namespace ExtraTask
                 "Network received throughput [KB/s]",
                 "Network transmitted throughput [KB/s]"
             };
-
+            
             PlotBasedOn_comboBox.Items.AddRange(comboBoxComponent);
         }
 

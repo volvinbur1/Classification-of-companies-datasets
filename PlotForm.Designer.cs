@@ -55,7 +55,7 @@
             // PoleReg_PlotView
             // 
             this.PoleReg_PlotView.Location = new System.Drawing.Point(15, 60);
-            this.PoleReg_PlotView.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.PoleReg_PlotView.Margin = new System.Windows.Forms.Padding(2);
             this.PoleReg_PlotView.Name = "PoleReg_PlotView";
             this.PoleReg_PlotView.PanCursor = System.Windows.Forms.Cursors.Hand;
             this.PoleReg_PlotView.Size = new System.Drawing.Size(765, 425);
@@ -78,6 +78,7 @@
             this.Name = "Plot_Form";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Plot";
+            this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.Plot_Form_FormClosed);
             this.Load += new System.EventHandler(this.Plot_Form_Load);
             this.ResumeLayout(false);
             this.PerformLayout();
