@@ -30,7 +30,7 @@
         {
             this.label1 = new System.Windows.Forms.Label();
             this.PlotBasedOn_comboBox = new System.Windows.Forms.ComboBox();
-            this.Plot_panel = new System.Windows.Forms.Panel();
+            this.PoleReg_PlotView = new OxyPlot.WindowsForms.PlotView();
             this.SuspendLayout();
             // 
             // label1
@@ -52,19 +52,25 @@
             this.PlotBasedOn_comboBox.Text = "Select";
             this.PlotBasedOn_comboBox.SelectedIndexChanged += new System.EventHandler(this.PlotBasedOn_comboBox_SelectedIndexChanged);
             // 
-            // Plot_panel
+            // PoleReg_PlotView
             // 
-            this.Plot_panel.Location = new System.Drawing.Point(12, 51);
-            this.Plot_panel.Name = "Plot_panel";
-            this.Plot_panel.Size = new System.Drawing.Size(776, 433);
-            this.Plot_panel.TabIndex = 2;
+            this.PoleReg_PlotView.Location = new System.Drawing.Point(15, 60);
+            this.PoleReg_PlotView.Margin = new System.Windows.Forms.Padding(2);
+            this.PoleReg_PlotView.Name = "PoleReg_PlotView";
+            this.PoleReg_PlotView.PanCursor = System.Windows.Forms.Cursors.Hand;
+            this.PoleReg_PlotView.Size = new System.Drawing.Size(765, 425);
+            this.PoleReg_PlotView.TabIndex = 2;
+            this.PoleReg_PlotView.Text = "plotView1";
+            this.PoleReg_PlotView.ZoomHorizontalCursor = System.Windows.Forms.Cursors.SizeWE;
+            this.PoleReg_PlotView.ZoomRectangleCursor = System.Windows.Forms.Cursors.SizeNWSE;
+            this.PoleReg_PlotView.ZoomVerticalCursor = System.Windows.Forms.Cursors.SizeNS;
             // 
             // Plot_Form
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(800, 496);
-            this.Controls.Add(this.Plot_panel);
+            this.Controls.Add(this.PoleReg_PlotView);
             this.Controls.Add(this.PlotBasedOn_comboBox);
             this.Controls.Add(this.label1);
             this.MaximizeBox = false;
@@ -72,6 +78,7 @@
             this.Name = "Plot_Form";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Plot";
+            this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.Plot_Form_FormClosed);
             this.Load += new System.EventHandler(this.Plot_Form_Load);
             this.ResumeLayout(false);
             this.PerformLayout();
@@ -82,6 +89,6 @@
 
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.ComboBox PlotBasedOn_comboBox;
-        private System.Windows.Forms.Panel Plot_panel;
+        private OxyPlot.WindowsForms.PlotView PoleReg_PlotView;
     }
 }

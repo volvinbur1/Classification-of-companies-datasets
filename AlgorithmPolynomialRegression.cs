@@ -46,12 +46,14 @@ namespace ExtraTask
             variableList = DataFromFile.ParseSelectedColumn(columnID, inputDataList);
 
             PolynomialLeastSquares objSquares = new PolynomialLeastSquares() { Degree = degree };
+          
             PolynomialRegression objRegression =
                 objSquares.Learn(variableList.Keys.ToArray(), variableList.Values.ToArray());
 
             //Func<double, double> OxOyFunc = x => (objRegression.Weights[0] * x + objRegression.Intercept);
 
             double[] returnArray = new double[objRegression.Weights.Length + 1];
+
             returnArray[0] = Math.Round(objRegression.Intercept, 1);
 
             for (int i = 1; i <= objRegression.Weights.Length; i++)
