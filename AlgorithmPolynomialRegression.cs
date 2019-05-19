@@ -39,23 +39,23 @@ namespace ExtraTask
             return default(int);
         };
 
-        public static double[] PolynomialRegresion(string cID, List<string> inputDataList, out SortedList<double, double> variableList) // y = DOUBLE_Array[1]*x + DOUBLE_Array[0];
+        public static double[] PolynomialRegresion(string cID, List<string> inputDataList, out SortedList<double, double> variableList, int degree) // y = DOUBLE_Array[1]*x + DOUBLE_Array[0];
         {
             int columnID = getColomnIdFunc(cID);
 
             variableList = DataFromFile.ParseSelectedColumn(columnID, inputDataList);
 
-            PolynomialLeastSquares objSquares = new PolynomialLeastSquares() {Degree = 1};
+            PolynomialLeastSquares objSquares = new PolynomialLeastSquares() { Degree = degree };
             PolynomialRegression objRegression =
                 objSquares.Learn(variableList.Keys.ToArray(), variableList.Values.ToArray());
 
             //Func<double, double> OxOyFunc = x => (objRegression.Weights[0] * x + objRegression.Intercept);
 
             double[] returnArray = new double[objRegression.Weights.Length + 1];
-            returnArray[0] = objRegression.Intercept;
+            returnArray[0] = Math.Round(objRegression.Intercept, 1);
 
             for (int i = 1; i <= objRegression.Weights.Length; i++)
-                returnArray[i] = objRegression.Weights[i - 1];
+                returnArray[i] = Math.Round(objRegression.Weights[i - 1], 1);
 
             return returnArray;
         }

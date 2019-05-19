@@ -56,7 +56,8 @@ namespace ExtraTask
                 //if (independentVar < minValueOfIndependentVar)
                 //    minValueOfIndependentVar = independentVar;
 
-                returnList.Add(timeStamp, independentVar);
+                if (!returnList.ContainsKey(timeStamp))
+                    returnList.Add(timeStamp, independentVar);
             }
 
             return returnList;
