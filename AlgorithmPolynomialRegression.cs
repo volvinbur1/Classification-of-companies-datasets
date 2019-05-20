@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Forms;
 using Accord.Statistics;
+using ZedGraph;
 using Accord.Statistics.Models.Regression.Linear;
 
 namespace ExtraTask
@@ -39,27 +40,43 @@ namespace ExtraTask
             return default(int);
         };
 
-        public static double[] PolynomialRegresion(string cID, List<string> inputDataList, out SortedList<double, double> variableList, int degree) // y = DOUBLE_Array[1]*x + DOUBLE_Array[0];
+        public static PointPairList PolynomialRegresion(string cID, List<string> inputDataList, out SortedList<double, double> variableList, int degree) // y = DOUBLE_Array[1]*x + DOUBLE_Array[0];
         {
             int columnID = getColomnIdFunc(cID);
 
             variableList = DataFromFile.ParseSelectedColumn(columnID, inputDataList);
 
             PolynomialLeastSquares objSquares = new PolynomialLeastSquares() { Degree = degree };
-          
             PolynomialRegression objRegression =
                 objSquares.Learn(variableList.Keys.ToArray(), variableList.Values.ToArray());
 
             //Func<double, double> OxOyFunc = x => (objRegression.Weights[0] * x + objRegression.Intercept);
 
-            double[] returnArray = new double[objRegression.Weights.Length + 1];
-
-            returnArray[0] = Math.Round(objRegression.Intercept, 1);
+            double[] coefOfFunction = new double[objRegression.Weights.Length + 1];
+            coefOfFunction[0] = Math.Round(objRegression.Intercept, 1);
 
             for (int i = 1; i <= objRegression.Weights.Length; i++)
-                returnArray[i] = Math.Round(objRegression.Weights[i - 1], 1);
+                coefOfFunction[i] = Math.Round(objRegression.Weights[i - 1], 1);
+            
+            double func(double x)
+            {
+                double y = 0;
+                for (int i = 0; i <= degree; i++)
+                    y += coefOfFunction[i] * Math.Pow(x, i);
+                return y;
+            }
 
-            return returnArray;
+            double[] independentValueArray = new double[variableList.Count], dependentValueArray = new double[variableList.Count];
+            int index = 0;
+
+            foreach (var pair in variableList)
+            {
+                independentValueArray[index] = pair.Key;
+                dependentValueArray[index] = func(pair.Value);
+                index++;
+            }
+
+            return new PointPairList(independentValueArray, dependentValueArray);
         }
     }
 }
