@@ -10,54 +10,67 @@ namespace ExtraTask
 {
     public partial class Algorithm
     {
-        //Timestamp [ms];	CPU cores;	CPU capacity provisioned [MHZ];	CPU usage [MHZ];	CPU usage [%];	Memory capacity provisioned [KB];	Memory usage [KB];	Disk read throughput [KB/s];	Disk write throughput [KB/s];	Network received throughput [KB/s];	Network transmitted throughput [KB/s]
-        private static Func<string, int> getColomnIdFunc = str =>
+        private static double Maximum(Dictionary<double, double>.ValueCollection valuesList)
         {
-            switch (str)
+            double max = double.MinValue;
+
+            foreach (var digit in valuesList)
+                if (digit > max)
+                    max = digit;
+
+            return max;
+        }
+
+        private static double Minimum(Dictionary<double, double>.ValueCollection valuesList)
+        {
+            double min = double.MaxValue;
+
+            foreach (var digit in valuesList)
+                if (digit < min)
+                    min = digit;
+
+            return min;
+        }
+
+        public static void InputDataNormalization(ref Dictionary<double, double> variablePair)
+        {
+            double minDependentValue = Minimum(variablePair.Values);
+            double maxDependentValue = Maximum(variablePair.Values);
+
+            var tempDictionary = new Dictionary<double, double>();
+
+            foreach (var pair in variablePair)
             {
-                case "CPU cores":
-                    return 1;
-                case "CPU capacity provisioned [MHZ]":
-                    return 2;
-                case "CPU usage [MHZ]":
-                    return 3;
-                case "CPU usage [%]":
-                    return 4;
-                case "Memory capacity provisioned [KB]":
-                    return 5;
-                case "Memory usage [KB]":
-                    return 6;
-                case "Disk read throughput [KB/s]":
-                    return 7;
-                case "Disk write throughput [KB/s];":
-                    return 8;
-                case "Network received throughput [KB/s]":
-                    return 9;
-                case "Network transmitted throughput [KB/s]":
-                    return 10;
+                var key = pair.Key;
+                var value = (pair.Value - minDependentValue) / (maxDependentValue - minDependentValue);
+                tempDictionary.Add(key, value);
             }
 
-            return default(int);
-        };
+            variablePair = tempDictionary;
+        }
 
-        public static PointPairList PolynomialRegresion(string cID, List<string> inputDataList, out SortedList<double, double> variableList, int degree) // y = DOUBLE_Array[1]*x + DOUBLE_Array[0];
+        public static PointPairList PolynomialRegresion(Dictionary<double, double> variablePair, int degree) // y = DOUBLE_Array[1]*x + DOUBLE_Array[0];
         {
-            int columnID = getColomnIdFunc(cID);
+           PolynomialRegression objRegression =
+                PolynomialRegression.FromData(degree, variablePair.Keys.ToArray(), variablePair.Values.ToArray());
 
-            variableList = DataFromFile.ParseSelectedColumn(columnID, inputDataList);
-
-            PolynomialLeastSquares objSquares = new PolynomialLeastSquares() { Degree = degree };
-            PolynomialRegression objRegression =
-                objSquares.Learn(variableList.Keys.ToArray(), variableList.Values.ToArray());
+            //PolynomialLeastSquares objSquares = new PolynomialLeastSquares() { Degree = degree };
+            //objSquares.Learn(variablePair.Keys.ToArray(), variablePair.Values.ToArray());
 
             //Func<double, double> OxOyFunc = x => (objRegression.Weights[0] * x + objRegression.Intercept);
 
             double[] coefOfFunction = new double[objRegression.Weights.Length + 1];
-            coefOfFunction[0] = Math.Round(objRegression.Intercept, 1);
+
+            coefOfFunction[0] = objRegression.Intercept;
+
+            int index = objRegression.Weights.Length - 1;
 
             for (int i = 1; i <= objRegression.Weights.Length; i++)
-                coefOfFunction[i] = Math.Round(objRegression.Weights[i - 1], 1);
-            
+            {
+                coefOfFunction[i] = objRegression.Weights[index];
+                index--;
+            }
+
             double func(double x)
             {
                 double y = 0;
@@ -66,17 +79,25 @@ namespace ExtraTask
                 return y;
             }
 
-            double[] independentValueArray = new double[variableList.Count], dependentValueArray = new double[variableList.Count];
-            int index = 0;
+            double[] independentValueArray = new double[variablePair.Count],
+                dependentValueArray = new double[variablePair.Count];
+            index = 0;
 
-            foreach (var pair in variableList)
+            foreach (var pair in variablePair)
             {
                 independentValueArray[index] = pair.Key;
-                dependentValueArray[index] = func(pair.Value);
+                dependentValueArray[index] = func(pair.Key);
                 index++;
             }
 
             return new PointPairList(independentValueArray, dependentValueArray);
         }
+
+        //public static void PolynomialRegresionMultiVariable(string cID, List<string> inputDataList,
+        //    out SortedList<double, double> variablePair, int degree)
+        //{
+
+        //}
+
     }
 }
