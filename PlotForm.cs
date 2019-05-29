@@ -1,12 +1,16 @@
-using System;
-using System.Collections.Generic;
-using System.Windows.Forms;
-using OxyPlot;
-using OxyPlot.Series;
+﻿using System;
+using System.Drawing;
+using Accord;
+
+//using OxyPlot;
+//using OxyPlot.Series;
 
 
 namespace ExtraTask
 {
+using System.Collections.Generic;
+using System.Windows.Forms;
+using ZedGraph;
     public partial class Plot_Form : Form
     {
         private List<string> InputDataList;
@@ -24,34 +28,37 @@ namespace ExtraTask
             MainFormObj = obj;
         }
 
-       
         private void PlotBasedOn_comboBox_SelectedIndexChanged(object sender, EventArgs e)
         {
-            model.ResetAllAxes();
-            PlotModel model = new PlotModel { Title = "Plot" };
-            LineSeries dots = new LineSeries
+            GraphPane pane = zedGraphControl1.GraphPane;
+            pane.XAxis.Title.Text = "Time";
+            pane.YAxis.Title.Text = PlotBasedOn_comboBox.Text;
+            pane.Title.Text = "Polinomial regression";
+
+            pane.CurveList.Clear();
+            PointPairList dots = new PointPairList();
+
+            var variablePair = DataFromFile.ParseSelectedColumn(PlotBasedOn_comboBox.SelectedItem.ToString(), InputDataList);
+
+            Algorithm.InputDataNormalization(ref variablePair);
+
+            PointPairList func = new PointPairList(Algorithm.PolynomialRegresion(variablePair, 3));
+
+            LineItem myCurve = pane.AddCurve("Polynomial Regression", func, Color.Red, SymbolType.None);
+
+            foreach (var pair in variablePair)
             {
-                LineStyle = LineStyle.None,
-                MarkerType = MarkerType.Circle,
-                MarkerSize = 1.5,
-                //MarkerStroke = OxyColors.Black
-            };
-
-            PoleReg_PlotView.Model = model;
-
-            double[] coefForFunc = Algorithm.PolynomialRegresion(PlotBasedOn_comboBox.SelectedItem.ToString(), InputDataList, out SortedList<double, double> variableForPlotsList);
-
-            Func<double, double> func = x => coefForFunc[1] * x + coefForFunc[0];
-
-            model.Series.Add(new FunctionSeries(func, variableForPlotsList.Keys[0], variableForPlotsList.Keys[variableForPlotsList.Count - 1], 0.1));
-
-            foreach (var pair in variableForPlotsList)
-            {
-                dots.Points.Add(new DataPoint(pair.Key, pair.Value));
-                dots.Smooth = true;
+                dots.Add(pair.Key, pair.Value);
             }
-            model.Series.Add(dots);
-            PoleReg_PlotView.Model = model;
+
+            LineItem myDots = pane.AddCurve(null, dots, Color.Green, SymbolType.Circle);
+            myDots.Line.IsVisible = false;
+            myDots.Symbol.Fill.Color = Color.Green;
+            myDots.Symbol.Fill.Type = FillType.Solid;
+            myDots.Symbol.Size = 3;
+
+            pane.AxisChange();
+            pane.AxisChange();
         }
 
         private void Plot_Form_Load(object sender, EventArgs e)
@@ -68,7 +75,7 @@ namespace ExtraTask
                 "Network received throughput [KB/s]",
                 "Network transmitted throughput [KB/s]"
             };
-            
+
             PlotBasedOn_comboBox.Items.AddRange(comboBoxComponent);
         }
 
