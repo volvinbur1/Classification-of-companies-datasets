@@ -60,6 +60,7 @@ namespace ExtraTask
             //Func<double, double> OxOyFunc = x => (objRegression.Weights[0] * x + objRegression.Intercept);
 
             double[] coefOfFunction = new double[objRegression.Weights.Length + 1];
+
             coefOfFunction[0] = objRegression.Intercept;
 
             int index = objRegression.Weights.Length - 1;
