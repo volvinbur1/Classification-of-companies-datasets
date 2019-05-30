@@ -32,6 +32,8 @@
             this.label1 = new System.Windows.Forms.Label();
             this.PlotBasedOn_comboBox = new System.Windows.Forms.ComboBox();
             this.zedGraphControl1 = new ZedGraph.ZedGraphControl();
+            this.linealGraph_CheckBox = new System.Windows.Forms.CheckBox();
+            this.normalizedData_CheckBox = new System.Windows.Forms.CheckBox();
             this.SuspendLayout();
             // 
             // label1
@@ -48,7 +50,7 @@
             // 
             this.PlotBasedOn_comboBox.FormattingEnabled = true;
             this.PlotBasedOn_comboBox.Location = new System.Drawing.Point(132, 15);
-            this.PlotBasedOn_comboBox.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.PlotBasedOn_comboBox.Margin = new System.Windows.Forms.Padding(4);
             this.PlotBasedOn_comboBox.Name = "PlotBasedOn_comboBox";
             this.PlotBasedOn_comboBox.Size = new System.Drawing.Size(160, 24);
             this.PlotBasedOn_comboBox.TabIndex = 1;
@@ -71,15 +73,39 @@
             this.zedGraphControl1.TabIndex = 2;
             this.zedGraphControl1.UseExtendedPrintDialog = true;
             // 
+            // linealGraph_CheckBox
+            // 
+            this.linealGraph_CheckBox.AutoSize = true;
+            this.linealGraph_CheckBox.Location = new System.Drawing.Point(309, 15);
+            this.linealGraph_CheckBox.Name = "linealGraph_CheckBox";
+            this.linealGraph_CheckBox.Size = new System.Drawing.Size(90, 21);
+            this.linealGraph_CheckBox.TabIndex = 3;
+            this.linealGraph_CheckBox.Text = "Only dots";
+            this.linealGraph_CheckBox.UseVisualStyleBackColor = true;
+            this.linealGraph_CheckBox.CheckedChanged += new System.EventHandler(this.linealGraph_CheckBox_CheckedChanged);
+            // 
+            // normalizedData_CheckBox
+            // 
+            this.normalizedData_CheckBox.AutoSize = true;
+            this.normalizedData_CheckBox.Location = new System.Drawing.Point(414, 15);
+            this.normalizedData_CheckBox.Name = "normalizedData_CheckBox";
+            this.normalizedData_CheckBox.Size = new System.Drawing.Size(162, 21);
+            this.normalizedData_CheckBox.TabIndex = 4;
+            this.normalizedData_CheckBox.Text = "Use normalized Data";
+            this.normalizedData_CheckBox.UseVisualStyleBackColor = true;
+            this.normalizedData_CheckBox.CheckedChanged += new System.EventHandler(this.normalizedData_CheckBox_CheckedChanged);
+            // 
             // Plot_Form
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1067, 610);
+            this.Controls.Add(this.normalizedData_CheckBox);
+            this.Controls.Add(this.linealGraph_CheckBox);
             this.Controls.Add(this.zedGraphControl1);
             this.Controls.Add(this.PlotBasedOn_comboBox);
             this.Controls.Add(this.label1);
-            this.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.Margin = new System.Windows.Forms.Padding(4);
             this.MaximizeBox = false;
             this.MinimizeBox = false;
             this.Name = "Plot_Form";
@@ -97,5 +123,7 @@
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.ComboBox PlotBasedOn_comboBox;
         private ZedGraph.ZedGraphControl zedGraphControl1;
+        private System.Windows.Forms.CheckBox linealGraph_CheckBox;
+        private System.Windows.Forms.CheckBox normalizedData_CheckBox;
     }
 }

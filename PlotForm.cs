@@ -1,14 +1,16 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Windows.Forms;
-using ZedGraph;
 using System.Drawing;
+using Accord;
+
 //using OxyPlot;
 //using OxyPlot.Series;
 
 
 namespace ExtraTask
 {
+using System.Collections.Generic;
+using System.Windows.Forms;
+using ZedGraph;
     public partial class Plot_Form : Form
     {
         private List<string> InputDataList;
@@ -26,17 +28,8 @@ namespace ExtraTask
             MainFormObj = obj;
         }
 
-        
-        //public PlotModel model = new PlotModel { Title = "Polynomial Regression Plot" };
-       
-
         private void PlotBasedOn_comboBox_SelectedIndexChanged(object sender, EventArgs e)
         {
-            
-            //Func<double, double> func = x => coefForFunc[1] * x + coefForFunc[0];
-
-            
-
 
             GraphPane pane = zedGraphControl1.GraphPane;
             pane.XAxis.Title.Text = "Time";
@@ -45,57 +38,40 @@ namespace ExtraTask
 
             pane.CurveList.Clear();
             PointPairList dots = new PointPairList();
-            PointPairList func = new PointPairList(Algorithm.PolynomialRegresion(PlotBasedOn_comboBox.SelectedItem.ToString(), InputDataList, out SortedList<double, double> variableForPlotsList, 5));
 
-            LineItem myCurve = pane.AddCurve("Polynomial Regression", func, Color.Red, SymbolType.None );
+            var variablePair = DataFromFile.ParseSelectedColumn(PlotBasedOn_comboBox.SelectedItem.ToString(), InputDataList);
 
-            //PointPairList dots = new PointPairList();
-            
-            foreach (var pair in variableForPlotsList)
+            if (normalizedData_CheckBox.Checked == true)
+            {
+                Algorithm.InputDataNormalization(ref variablePair);
+            }
+            PointPairList func = new PointPairList(Algorithm.PolynomialRegresion(variablePair, 3));
+
+            LineItem myCurve = pane.AddCurve("Polynomial Regression", func, Color.Red, SymbolType.None);
+
+            foreach (var pair in variablePair)
             {
                 dots.Add(pair.Key, pair.Value);
             }
 
-            LineItem myDots = pane.AddCurve(null, dots, Color.Green, SymbolType.Circle);
-            myDots.Line.IsVisible = false;
-            myDots.Symbol.Fill.Color = Color.Green;
+            LineItem myDots = pane.AddCurve(null, dots, Color.Blue, SymbolType.Diamond);
+            if(linealGraph_CheckBox.Checked == true)
+            {
+                myDots.Line.IsVisible = false;
+            }
+            else
+            {
+                myDots.Line.IsVisible = true;
+            }
+            myDots.Symbol.Fill.Color = Color.Blue;
             myDots.Symbol.Fill.Type = FillType.Solid;
             myDots.Symbol.Size = 3;
-            //PlotModel model = new PlotModel { Title = "Polynomial Regression Plot"};
 
+            pane.YAxis.Scale.MinAuto = true;
+            pane.YAxis.Scale.MaxAuto = true;
+            pane.XAxis.Scale.MinAuto = true;
+            pane.XAxis.Scale.MaxAuto = true;
 
-            //LineSeries dots = new LineSeries
-            //{ 
-            //    //Color = OxyColors.Black,
-            //    LineStyle = LineStyle.None,              
-            //    MarkerType = MarkerType.Circle,
-            //    MarkerSize = 1.5,
-            //    //MarkerStroke = OxyColors.Black
-            //};
-            //var myController = new PlotController();
-            //PoleReg_PlotView.Controller = myController;
-
-            //PoleReg_PlotView.Model = model;
-
-            //double[] coefForFunc = Algorithm.PolynomialRegresion(PlotBasedOn_comboBox.SelectedItem.ToString(), InputDataList, out SortedList<double, double> variableForPlotsList);
-
-            //Func<double, double> func = x => coefForFunc[1] * x + coefForFunc[0];
-
-            //model.Series.Add(new FunctionSeries(func, variableForPlotsList.Keys[0], variableForPlotsList.Keys[variableForPlotsList.Count - 1], 0.1, "Polynomial Regression"));        
-
-            //foreach (var pair in variableForPlotsList)
-            //{
-            //    dots.Points.Add(new DataPoint(pair.Key, pair.Value));
-            //    dots.Smooth = true;
-
-            //}
-            //model.Series.Add(dots);
-            //PoleReg_PlotView.Model = model;
-            //pane.XAxis.Scale.Min = xmin;
-
-            //pane.YAxis.Scale.Min = ymin;
-
-            pane.AxisChange();
             pane.AxisChange();
         }
 
@@ -120,6 +96,16 @@ namespace ExtraTask
         private void Plot_Form_FormClosed(object sender, FormClosedEventArgs e)
         {
             MainFormObj.Close();
+        }
+
+        private void linealGraph_CheckBox_CheckedChanged(object sender, EventArgs e)
+        {
+            PlotBasedOn_comboBox_SelectedIndexChanged(sender, e);
+        }
+
+        private void normalizedData_CheckBox_CheckedChanged(object sender, EventArgs e)
+        {
+            PlotBasedOn_comboBox_SelectedIndexChanged(sender, e);
         }
     }
 }
