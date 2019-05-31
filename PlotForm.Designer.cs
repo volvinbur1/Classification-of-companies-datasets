@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+
             this.components = new System.ComponentModel.Container();
             this.label1 = new System.Windows.Forms.Label();
             this.PlotBasedOn_comboBox = new System.Windows.Forms.ComboBox();
@@ -115,7 +116,6 @@
             this.Load += new System.EventHandler(this.Plot_Form_Load);
             this.ResumeLayout(false);
             this.PerformLayout();
-
         }
 
         #endregion

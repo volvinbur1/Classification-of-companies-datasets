@@ -30,7 +30,6 @@ using ZedGraph;
 
         private void PlotBasedOn_comboBox_SelectedIndexChanged(object sender, EventArgs e)
         {
-
             GraphPane pane = zedGraphControl1.GraphPane;
             pane.XAxis.Title.Text = "Time";
             pane.YAxis.Title.Text = PlotBasedOn_comboBox.Text;
@@ -41,10 +40,12 @@ using ZedGraph;
 
             var variablePair = DataFromFile.ParseSelectedColumn(PlotBasedOn_comboBox.SelectedItem.ToString(), InputDataList);
 
+
             if (normalizedData_CheckBox.Checked == true)
             {
                 Algorithm.InputDataNormalization(ref variablePair);
             }
+            
             PointPairList func = new PointPairList(Algorithm.PolynomialRegresion(variablePair, 3));
 
             LineItem myCurve = pane.AddCurve("Polynomial Regression", func, Color.Red, SymbolType.None);
