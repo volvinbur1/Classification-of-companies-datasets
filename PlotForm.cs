@@ -8,9 +8,9 @@ using Accord;
 
 namespace ExtraTask
 {
-using System.Collections.Generic;
-using System.Windows.Forms;
-using ZedGraph;
+    using System.Collections.Generic;
+    using System.Windows.Forms;
+    using ZedGraph;
     public partial class Plot_Form : Form
     {
         private List<string> InputDataList;
@@ -36,28 +36,57 @@ using ZedGraph;
             pane.Title.Text = "Polinomial regression";
 
             pane.CurveList.Clear();
-            PointPairList dots = new PointPairList();
 
             var variablePair = DataFromFile.ParseSelectedColumn(PlotBasedOn_comboBox.SelectedItem.ToString(), InputDataList);
 
-            Algorithm.InputDataNormalization(ref variablePair);
+            if (normalizedData_CheckBox.Checked == true)
+            {
+                Algorithm.InputDataNormalization(ref variablePair);
+            }
+
+            Dictionary<double, double> resultOfClassification = new Dictionary<double, double>();
+            if (BayesClassifier_checkBox.Checked)
+                resultOfClassification = Algorithm.BayesClassifier(InputDataList);
 
             PointPairList func = new PointPairList(Algorithm.PolynomialRegresion(variablePair, 3));
 
             LineItem myCurve = pane.AddCurve("Polynomial Regression", func, Color.Red, SymbolType.None);
 
+            PointPairList dotsRed = new PointPairList();
+            PointPairList dotsBlue = new PointPairList();
+
             foreach (var pair in variablePair)
             {
-                dots.Add(pair.Key, pair.Value);
+                if (resultOfClassification.TryGetValue(pair.Key, out double value) && Math.Round(value) == 1)
+                    dotsRed.Add(pair.Key, pair.Value);
+                else
+                    dotsBlue.Add(pair.Key, pair.Value);
             }
 
-            LineItem myDots = pane.AddCurve(null, dots, Color.Green, SymbolType.Circle);
-            myDots.Line.IsVisible = false;
-            myDots.Symbol.Fill.Color = Color.Green;
-            myDots.Symbol.Fill.Type = FillType.Solid;
-            myDots.Symbol.Size = 3;
+            LineItem myDotsRed = pane.AddCurve(null, dotsRed, Color.Red, SymbolType.Diamond);
+            LineItem myDotsBlue = pane.AddCurve(null, dotsBlue, Color.Blue, SymbolType.Diamond);
 
-            pane.AxisChange();
+            if (linealGraph_CheckBox.Checked == true)
+            {
+                // myDots.Line.IsVisible = false;
+            }
+            else
+            {
+                //myDots.Line.IsVisible = true;
+            }
+
+            myDotsRed.Symbol.Fill.Type = FillType.Solid;
+            myDotsRed.Symbol.Size = 3;
+            myDotsRed.Line.IsVisible = false;
+            myDotsBlue.Symbol.Fill.Type = FillType.Solid;
+            myDotsBlue.Symbol.Size = 3;
+            myDotsBlue.Line.IsVisible = false;
+
+            pane.YAxis.Scale.MinAuto = true;
+            pane.YAxis.Scale.MaxAuto = true;
+            pane.XAxis.Scale.MinAuto = true;
+            pane.XAxis.Scale.MaxAuto = true;
+
             pane.AxisChange();
         }
 
@@ -82,6 +111,24 @@ using ZedGraph;
         private void Plot_Form_FormClosed(object sender, FormClosedEventArgs e)
         {
             MainFormObj.Close();
+        }
+
+        private void linealGraph_CheckBox_CheckedChanged(object sender, EventArgs e)
+        {
+            if (linealGraph_CheckBox.Checked && PlotBasedOn_comboBox.SelectedIndex > -1)
+                PlotBasedOn_comboBox_SelectedIndexChanged(sender, e);
+        }
+
+        private void normalizedData_CheckBox_CheckedChanged(object sender, EventArgs e)
+        {
+            if (normalizedData_CheckBox.Checked && PlotBasedOn_comboBox.SelectedIndex > -1)
+                PlotBasedOn_comboBox_SelectedIndexChanged(sender, e);
+        }
+
+        private void checkBox1_CheckedChanged(object sender, EventArgs e)
+        {
+            if (BayesClassifier_checkBox.Checked && PlotBasedOn_comboBox.SelectedIndex > -1)
+                PlotBasedOn_comboBox_SelectedIndexChanged(sender, e);
         }
     }
 }

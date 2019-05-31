@@ -30,8 +30,49 @@ namespace ExtraTask
 
                 returnList.Add(valueSet);
             }
-
+            InputDataNormalization(ref returnList);
             return returnList;
+        }
+
+        internal static double Maximum(List<double[]> list, int index)
+        {
+            double max = double.MinValue;
+
+            foreach (var set in list)
+            {
+                if (set[index] > max)
+                    max = set[index];
+            }
+
+            return max;
+        }
+
+        internal static double Minimum(List<double[]> list, int index)
+        {
+            double min = double.MaxValue;
+
+            foreach (var set in list)
+            {
+                if (set[index] < min)
+                    min = set[index];
+            }
+
+            return min;
+        }
+
+        public static void InputDataNormalization(ref List<double[]> variableList)
+        {
+            double minDependentValue1 = Minimum(variableList, 1);
+            double maxDependentValue1 = Maximum(variableList, 1);
+
+            double minDependentValue2 = Minimum(variableList, 2);
+            double maxDependentValue2 = Maximum(variableList, 2);
+
+            foreach (var set in variableList)
+            {
+                set[1] = (set[1] - minDependentValue1) / (maxDependentValue1 - minDependentValue1);
+                set[2] = (set[2] - minDependentValue2) / (maxDependentValue2 - minDependentValue2);
+            }
         }
 
         public static Dictionary<double, double> BayesClassifier(List<string> inputDataList)
