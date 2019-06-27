@@ -10,7 +10,7 @@ namespace ExtraTask
 {
     public partial class Algorithm
     {
-        private static double Maximum(Dictionary<double, double>.ValueCollection valuesList)
+        internal static double Maximum(Dictionary<double, double>.ValueCollection valuesList)
         {
             double max = double.MinValue;
 
@@ -21,7 +21,7 @@ namespace ExtraTask
             return max;
         }
 
-        private static double Minimum(Dictionary<double, double>.ValueCollection valuesList)
+        internal static double Minimum(Dictionary<double, double>.ValueCollection valuesList)
         {
             double min = double.MaxValue;
 
@@ -51,16 +51,14 @@ namespace ExtraTask
 
         public static PointPairList PolynomialRegresion(Dictionary<double, double> variablePair, int degree) // y = DOUBLE_Array[1]*x + DOUBLE_Array[0];
         {
-           PolynomialRegression objRegression =
-                PolynomialRegression.FromData(degree, variablePair.Keys.ToArray(), variablePair.Values.ToArray());
+            var polyTeacher = new PolynomialLeastSquares()
+            {
+                Degree = 3
+            };
 
-            //PolynomialLeastSquares objSquares = new PolynomialLeastSquares() { Degree = degree };
-            //objSquares.Learn(variablePair.Keys.ToArray(), variablePair.Values.ToArray());
-
-            //Func<double, double> OxOyFunc = x => (objRegression.Weights[0] * x + objRegression.Intercept);
+            PolynomialRegression objRegression = polyTeacher.Learn(variablePair.Keys.ToArray(), variablePair.Values.ToArray());
 
             double[] coefOfFunction = new double[objRegression.Weights.Length + 1];
-
             coefOfFunction[0] = objRegression.Intercept;
 
             int index = objRegression.Weights.Length - 1;
@@ -92,12 +90,5 @@ namespace ExtraTask
 
             return new PointPairList(independentValueArray, dependentValueArray);
         }
-
-        //public static void PolynomialRegresionMultiVariable(string cID, List<string> inputDataList,
-        //    out SortedList<double, double> variablePair, int degree)
-        //{
-
-        //}
-
     }
 }
